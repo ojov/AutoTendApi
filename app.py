@@ -1,19 +1,19 @@
 from flask import Flask, render_template, request, g, session, url_for, redirect, flash, send_from_directory, abort, jsonify
 import os
 import random
+from repository import *
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 import hashlib
-from model import db, User
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///attendance.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-migrate = Migrate(app, db)
-db.init_app(app)
 
+db = AttendanceManager()
 def hash_password(password):
     salt = os.urandom(16)
     password_hash = hashlib.pbkdf2_hmac(
@@ -28,27 +28,15 @@ def check_password(password, password_hash):
     return new_password_hash == stored_password_hash
 
 
-def get_user(user_id):
-    user = User.query.get(user_id)
-    if not user:
-        return None
-    return {
-        'id': user.id, 'email': user.email, 'firstname': user.firstname, 'lastname': user.lastname, 'username': user.username, 'gender': user.gender, 'password': user.password, 'notification_enabled': user.notification_enabled, 'privacy_enabled': user.privacy_enabled, 'organisation': user.organisation
-    }
-
 
 @app.before_request
 def load_user():
     user_id = session.get('user_id')
     if user_id is not None:
-        g.user = get_user(user_id)
+        g.user = db.get_user(user_id)
     else:
         g.user = None
 
-def check_user_exists(email, username):
-    # Use the query object to check if user with the given email or username exists
-    user = User.query.filter((User.email == email) | (User.username == username)).first()
-    return bool(user)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -56,16 +44,17 @@ def signup():
         email = request.form['email']
         username = secure_filename(request.form['username'])
         password = request.form['password']
+        gender = request.form['gender']
+        lastname = request.form['lastname']
         session['username'] = username
 
-        if check_user_exists(email, username):
+        if db.check_user_exists(email, username):
             error_message = 'User with the same email or username already exists.'
             return render_template('signup.html', error=error_message)
 
         password_hash = hash_password(password)
-        user = User(email=email, username=username, password=password_hash)
-        db.session.add(user)
-        db.session.commit()
+        user = User( firstname=username, lastname=lastname, gender=gender,email=email, password=password_hash)
+        db.add_user(user)
         
         return redirect(url_for('login'))
     return render_template('signup.html')
@@ -75,7 +64,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(username=username).first()
+        user = db.get_user_by_email(username)
         if not user:
             error = 'Invalid email or password'
             return render_template('login.html', error=error)
@@ -89,6 +78,42 @@ def login():
             return render_template('login.html', error=error)
 
     return render_template('login.html')
+
+
+@app.route('/create_meeting', methods=['POST'])
+def create_meeting():
+    title = request.form.get('title')
+    
+    if not title:
+        return 'Title is required'
+    
+    # Generate a QR code
+    qr_code = secrets.token_urlsafe(16)
+
+    new_meeting = Meeting(title=title, qr_code=qr_code)
+    db.session.add(new_meeting)
+    db.session.commit()
+
+    return redirect(url_for('home'))
+
+
+@app.route('/mark_attendance', methods=['POST'])
+def mark_attendance():
+    qr_code = request.form.get('qr_code')
+    attendee_name = request.form.get('attendee_name')
+
+    if not qr_code or not attendee_name:
+        return 'QR code and attendee name are required'
+    
+    meeting = Meeting.query.filter_by(qr_code=qr_code).first()
+
+    if not meeting:
+        return 'Meeting not found'
+
+    new_attendance = Attendance(meeting_id=meeting.id, attendee_name=attendee_name, is_present=True)
+    db.session.add(new_attendance)
+    db.session.commit()
+    return 'Attendance marked successfully'
 
 
 @app.route('/signout')
