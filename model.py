@@ -17,4 +17,5 @@ class User(db.Model):
     notification_enabled = db.Column(db.Boolean, default=False)
     pin = db.Column(db.Integer)
     organization = db.String(100)
+    department = db.String(100)
     password = db.Column(db.String(64))

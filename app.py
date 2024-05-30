@@ -33,7 +33,7 @@ def get_user(user_id):
     if not user:
         return None
     return {
-        'id': user.id, 'email': user.email, 'firstname': user.firstname, 'lastname': user.lastname, 'username': user.username, 'gender': user.gender, 'password': user.password, 'notification_enabled': user.notification_enabled, 'privacy_enabled': user.privacy_enabled, 'organisation': user.organisation
+        'id': user.id, 'email': user.email, 'firstname': user.firstname, 'lastname': user.lastname, 'username': user.username, 'gender': user.gender, 'password': user.password, 'notification_enabled': user.notification_enabled, 'privacy_enabled': user.privacy_enabled, 'organization': user.organization, 'department': user.department
     }
 
 
@@ -56,14 +56,23 @@ def signup():
         email = request.form['email']
         username = secure_filename(request.form['username'])
         password = request.form['password']
+        confirmpassword = request.form['confirmpassword']
+        firstname = request.form['fname']
+        lastname = request.form['lname']
+        organization = request.form['organization']
+        department = request.form['department']
         session['username'] = username
 
         if check_user_exists(email, username):
             error_message = 'User with the same email or username already exists.'
             return render_template('signup.html', error=error_message)
+        
+        elif password != confirmpassword:
+            error_message = 'Passwords do not match.'
+            return render_template('signup.html', error=error_message)
 
         password_hash = hash_password(password)
-        user = User(email=email, username=username, password=password_hash)
+        user = User(email=email, username=username, password=password_hash, firstname=firstname, lastname=lastname, organization=organization, department=department)
         db.session.add(user)
         db.session.commit()
         
@@ -80,6 +89,7 @@ def login():
             error = 'Invalid email or password'
             return render_template('login.html', error=error)
 
+        session['username'] = username
         password_hash = user.password
         if check_password(password, password_hash):
             session['user_id'] = user.id
@@ -91,18 +101,6 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/signout')
-def signout():
-    session.pop('user_id', None)
-    return redirect(url_for('index'))
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
-   
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -112,8 +110,13 @@ def dashboard():
     if g.user is None:
         return redirect(url_for('login'))
     
-    current_user = User.query.get(g.user['id'])
-    return render_template('dashboard.html', user=current_user)
+    user = session.get('username')
+    return render_template('dashboard.html', user=user)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run()
