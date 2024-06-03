@@ -17,7 +17,6 @@ class User(Base):
     organization = String(100)
     password = Column(String(64))
     
-
 class Meeting(Base):
     id = Column(Integer, primary_key=True)
     admin_id = Column(Integer, ForeignKey('user.id'), nullable=False)

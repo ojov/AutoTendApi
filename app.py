@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 import hashlib
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///attendance.db'
