@@ -3,48 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Attendance Interface</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .container {
-    text-align: center;
-  }
-  .button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px;
-    cursor: pointer;
-  }
-  .input-field {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-</style>
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
+
 </head>
 <body>
-<div class="container">
-  <button class="button">Mark attendance</button>
-  <button class="button">Access Device location</button>
-  <div>
-    <label for="lecture-code">Lecture code:</label>
-    <input type="text" id="lecture-code" class="input-field">
+
+  <div class="dashboard-header">
+    Create Meeting
   </div>
-</div>
+
+  <button class="button">Start a meeting</button>
+  <button class="button">Schedule a meeting</button>
+
+  <div class="toggle-container">
+    <span>Access Device location</span>
+    <label class="toggle-switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+  </div>
+
 </body>
 </html>

@@ -4,48 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Score Announcement</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
-    }
-    .header {
-        background-color: #006400; /* Dark Green */
-        color: white;
-        padding: 10px;
-        text-align: center;
-    }
-    .content {
-        background-color: #fff;
-        padding: 20px;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
-    th {
-        background-color: #006400; /* Dark Green */
-        color: white;
-    }
-    td {
-        text-align: left;
-    }
-    .button {
-        background-color: #4CAF50; /* Green */
-        color: white;
-        padding: 5px 10px;
-        margin: 5px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/summary.css') }}">
+
 </head>
 <body>
 
