@@ -8,6 +8,7 @@ from datetime import datetime
 Base = declarative_base()
 
 class User(Base):
+    __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
     email = Column(String(50), unique=True)
     firstname = Column(String(50))
@@ -18,6 +19,7 @@ class User(Base):
     password = Column(String(64))
     
 class Meeting(Base):
+    __tablename__ = 'meetings'
     id = Column(Integer, primary_key=True)
     admin_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     admin = relationship('User', back_populates='meetings')
@@ -30,6 +32,7 @@ class Meeting(Base):
     attendances = relationship('Attendance', back_populates='meeting')
 
 class Attendance(Base):
+    __tablename__ = 'attendance'
     id = Column(Integer, primary_key=True)
     meeting_id = Column(Integer, ForeignKey('meeting.id'), nullable=False)
     meeting = relationship('Meeting', back_populates='attendances')
@@ -39,6 +42,7 @@ class Attendance(Base):
     status = Column(Enum('Present', 'Absent', 'Late', name='attendance_status'), default='Present')
 
 class QRCode(Base):
+    __tablename__ = 'qrcode'
     id = Column(Integer, primary_key=True)
     qr_code_data = Column(Text, nullable=False)
     generated_time = Column(DateTime, default=datetime.utcnow)

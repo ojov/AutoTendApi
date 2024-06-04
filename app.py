@@ -5,6 +5,7 @@ from repository import *
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 import hashlib
+import secrets
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
