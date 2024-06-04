@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Marker</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .container {
+    text-align: center;
+  }
+  button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  input[type="text"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <button id="mark-attendance">Mark attendance</button>
+  <button id="access-location">Access Device location</button>
+  <div>
+    <label for="lecture-code">Lecture code:</label>
+    <input type="text" id="lecture-code" name="lecture-code">
+  </div>
+</div>
+</body>
+</html>

@@ -24,3 +24,8 @@ function validation(){
       return false;
     }
   }
+
+  document.getElementById('loginForm').addEventListener('submit', function (event) {
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    submitButton.querySelector('.spinner-border').style.display = 'inline-block';
+});

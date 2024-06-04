@@ -4,7 +4,8 @@ import random
 from repository import *
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
-import hashlib
+from services import *
+
 import secrets
 
 app = Flask(__name__)
@@ -12,22 +13,7 @@ app.config['SECRET_KEY'] = os.urandom(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///attendance.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
 db = AttendanceManager()
-def hash_password(password):
-    salt = os.urandom(16)
-    password_hash = hashlib.pbkdf2_hmac(
-        'sha256', password.encode('utf-8'), salt, 100000)
-    return salt + password_hash
-
-def check_password(password, password_hash):
-    salt = password_hash[:16]
-    stored_password_hash = password_hash[16:]
-    new_password_hash = hashlib.pbkdf2_hmac(
-        'sha256', password.encode('utf-8'), salt, 100000)
-    return new_password_hash == stored_password_hash
-
-
 
 @app.before_request
 def load_user():
@@ -37,24 +23,29 @@ def load_user():
     else:
         g.user = None
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         email = request.form['email']
         username = secure_filename(request.form['username'])
         password = request.form['password']
-        gender = request.form['gender']
-        lastname = request.form['lastname']
+        confirmpassword = request.form['confirmpassword']
+        firstname = request.form['fname']
+        lastname = request.form['lname']
+        organization = request.form['organization']
+        department = request.form['department']
         session['username'] = username
 
         if db.check_user_exists(email, username):
             error_message = 'User with the same email or username already exists.'
             return render_template('signup.html', error=error_message)
+        
+        elif password != confirmpassword:
+            error_message = 'Passwords do not match.'
+            return render_template('signup.html', error=error_message)
 
         password_hash = hash_password(password)
-        user = User( firstname=username, lastname=lastname, gender=gender,email=email, password=password_hash)
-        db.add_user(user)
+        db.add_user(email, username, firstname, lastname, password_hash, organization, department)
         
         return redirect(url_for('login'))
     return render_template('signup.html')
@@ -62,13 +53,14 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
-        user = db.get_user_by_email(username)
+        user = db.get_user_by_email(email)
         if not user:
             error = 'Invalid email or password'
             return render_template('login.html', error=error)
 
+        session['email'] = email
         password_hash = user.password
         if check_password(password, password_hash):
             session['user_id'] = user.id
@@ -137,8 +129,32 @@ def dashboard():
     if g.user is None:
         return redirect(url_for('login'))
     
-    current_user = User.query.get(g.user['id'])
-    return render_template('dashboard.html', user=current_user)
+    user = session.get('email')
+    return render_template('dashboard.html', user=user)
+
+@app.route('/tracker')
+def tracker():
+    return render_template('trackATD.html')
+
+@app.route('/create')
+def create():
+    return render_template('createATD.html')
+
+@app.route('/records')
+def records():
+    return render_template('records.html')
+
+@app.route('/markATD')
+def markATD():
+    return render_template('markATD.html')
+
+@app.route('/schedule')
+def schedule():
+    return render_template('schedule.html')
+
+@app.route('/summary')
+def summary():
+    return render_template('summary.html')
 
 if __name__ == '__main__':
     app.run()

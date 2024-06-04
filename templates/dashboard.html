@@ -1,11 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+  }
+  .header .profile,
+  .header .menu {
+    font-size: 24px;
+  }
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    background-color: #004d00; /* Dark green color */
+    color: white;
+  }
+  .tab {
+    padding: 10px 20px;
+  }
+  .tab.active {
+    background-color: #4CAF50; /* Highlighted tab color */
+  }
+  .dashboard-icons {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 15px;
+  }
+  .icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+  }
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    color: white;
+    font-size: 30px;
+  }
+  .icon-label {
+    text-align: center;
+  }
+  /* Icon background colors */
+  .attendant-tracker { background-color: #808000; } /* Olive green */
+  .upcoming-meetings { background-color: #A52A2A; } /* Brown */
+  .mark-attendant { background-color: #004d00; } /* Dark green */
+  .create-meeting { background-color: #0000FF; } /* Blue */
+  .updates { background-color: #FFC0CB; } /* Pink */
+  .records { background-color: #000000; } /* Black */
+</style>
 </head>
 <body>
-   <h1> Welcome Back {{user}}! </h1>
+  <div class="header">
+    <div class="profile">👤</div>
+    <div class="menu">☰</div>
+  </div>
+  <div class="tabs">
+    <div class="tab">Home</div>
+    <div class="tab active">Dashboard</div>
+  </div>
+  <div class="dashboard-icons">
+    <div class="icon">
+      <div class="icon-circle attendant-tracker">📝</div>
+      <div class="icon-label">My Attendant Tracker</div>
+    </div>
+    <div class="icon">
+      <div class="icon-circle upcoming-meetings">📅</div>
+      <div class="icon-label">Upcoming Meetings</div>
+    </div>
+    <div class="icon">
+      <div class="icon-circle mark-attendant">✓</div>
+      <div class="icon-label">Mark Attendant</div>
+    </div>
+    <div class="icon">
+      <div class="icon-circle create-meeting">✎</div>
+      <div class="icon-label">Create a Meeting</div>
+    </div>
+    <div class="icon">
+      <div class="icon-circle updates">🔔</div>
+      <div class="icon-label">Updates</div>
+    </div>
+    <div class="icon">
+      <div class="icon-circle records">📄</div>
+      <div class="icon-label">Records</div>
+    </div>
+  </div>
 </body>
 </html>
