@@ -4,52 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Announcement Section</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    margin: 0;
-    padding: 20px;
-  }
-  .announcement-header {
-    background-color: #006400; /* Dark Green */
-    color: white;
-    padding: 10px;
-    text-align: center;
-  }
-  .announcement-content {
-    background-color: #90EE90; /* Light Green */
-    padding: 10px;
-    margin-top: 10px;
-  }
-  .announcement-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-  }
-  .announcement-row:last-child {
-    margin-bottom: 0;
-  }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/schedule.css') }}">
+
 </head>
 <body>
 
-<div class="announcement-header">
-  Announcement/ Updates
-</div>
+  <div class="announcement-header">
+    Announcement/ Updates
+  </div>
 
-<div class="announcement-content">
-  <div class="announcement-row">
-    <span>Class: Discrete Mathematics</span>
-    <span>Date: 13/04/2024</span>
-    <span>Time: 8:30 am</span>
+  <div class="announcement-content">
+    <div class="bar">
+      <ul>
+        <li>Discrete Mathematics</li>
+        <li>13-04-2024</li>
+        <li>8:30 am</li>
+      </ul>
+    </div>
+    
+    <div class="bar">
+      <ul>
+        <li>Challenge Studio</li>
+        <li>13-04-2024</li>
+        <li>4:30 am</li>
+      </ul>
+    </div>
+
+    <div class="bar">
+      <ul>
+        <li>Artificial Intelligence</li>
+        <li>13-04-2024</li>
+        <li>1:30 pm</li>
+      </ul>
+    </div>
+    
   </div>
-  <div class="announcement-row">
-    <span>Class: Challenge Studio</span>
-    <span>Date: 13/04/2024</span>
-    <span>Time: 4:31 pm</span>
-  </div>
-</div>
 
 </body>
 </html>

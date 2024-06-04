@@ -4,58 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Class Records Interface</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .sidebar {
-    width: 200px;
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-right: 2px solid #ddd;
-  }
-  .sidebar h2 {
-    font-size: 18px;
-    color: #333;
-  }
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  .sidebar ul li {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-  }
-  .sidebar ul li:hover {
-    background-color: #ddd;
-  }
-  .content {
-    flex-grow: 1;
-    padding: 20px;
-    text-align: center;
-  }
-  .content h2 {
-    font-size: 24px;
-    color: #333;
-  }
-  .summary-circle {
-    display: inline-block;
-    background-color: #ffeb3b;
-    border-radius: 50%;
-    width: 200px;
-    height: 200px;
-    line-height: 200px;
-    text-align: center;
-    vertical-align: middle;
-  }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/track.css') }}">
+
 </head>
 <body>
 <div class="sidebar">
@@ -68,7 +18,9 @@
 </div>
 <div class="content">
   <div class="summary-circle">
-    Student's Summary
+    <a href="{{ url_for('summary') }}">
+      Student's Summary
+    </a>
   </div>
 </div>
 </body>

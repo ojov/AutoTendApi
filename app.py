@@ -134,26 +134,44 @@ def dashboard():
 
 @app.route('/tracker')
 def tracker():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
     return render_template('trackATD.html')
 
 @app.route('/create')
 def create():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
     return render_template('createATD.html')
 
 @app.route('/records')
 def records():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
     return render_template('records.html')
 
 @app.route('/markATD')
 def markATD():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
     return render_template('markATD.html')
 
 @app.route('/schedule')
 def schedule():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
     return render_template('schedule.html')
 
 @app.route('/summary')
 def summary():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
     return render_template('summary.html')
 
 if __name__ == '__main__':
