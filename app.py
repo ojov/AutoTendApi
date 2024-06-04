@@ -10,13 +10,9 @@ import secrets
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///attendance.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-db = AttendanceManager()
-
-
+db = AttendanceManager(path='sqlite:///attendance.db', logging=True)
 
 @app.before_request
 def load_user():
@@ -30,19 +26,21 @@ def load_user():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        breakpoint()
         email = request.form['email']
+        firstname = request.form['fname']
+        lastname = request.form['lname']
         username = secure_filename(request.form['username'])
         password = request.form['password']
         gender = request.form['gender']
-        lastname = request.form['lastname']
+        organisation =request.form['organization']
         session['username'] = username
-
+        breakpoint()
         if db.check_user_exists(email, username):
-            error_message = 'User with the same email or username already exists.'
+            error_message = 'User with the same email already exists.'
             return render_template('signup.html', error=error_message)
-
         password_hash = hash_password(password)
-        user = User( firstname=username, lastname=lastname, gender=gender,email=email, password=password_hash)
+        user = User( firstname=firstname, lastname=lastname,username=username, email=email,organisation=organisation, gender=gender, password=password_hash)
         db.add_user(user)
         
         return redirect(url_for('login'))
@@ -131,4 +129,4 @@ def dashboard():
     return render_template('dashboard.html', user=user)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

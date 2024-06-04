@@ -1,24 +1,27 @@
 from sqlalchemy import create_engine, select, delete
 from sqlalchemy.orm import sessionmaker
-from models import User, Meeting, Attendance
+from models import *
+
+
 
 class AttendanceManager:
     def __init__(self, path="sqlite:///attendance.db", logging=False):
         self.engine = create_engine(path, echo=logging)
         Session = sessionmaker(bind=self.engine)
+        Base.metadata.create_all(bind=self.engine)
         self.session = Session()
 
     def user_exists(self, email):
         return self.session.query(User).filter(User.email == email).count() > 0
 
-    def add_user(self, email, firstname, lastname, gender, password):
+    def add_user(self, firstname, lastname, username,email, gender,organization, password):
         user = User(
-            email=email,
             firstname=firstname,
             lastname=lastname,
+            username=username,
+            email=email,
+            organization=organization,
             gender=gender,
-            # pin=pin,
-            # organization=organization,
             password=password
         )
         self.session.add(user)
@@ -34,7 +37,7 @@ class AttendanceManager:
         self.session.add(attendance)
         self.session.commit()
         
-    def check_user_exists(email, username):
+    def check_user_exists( self, email, username):
     # Use the query object to check if user with the given email or username exists
         user = User.query.filter((User.email == email) | (User.username == username)).first()
         return bool(user)

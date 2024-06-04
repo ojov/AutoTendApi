@@ -4,24 +4,25 @@ from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Text, DateT
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
 
+
 # Initializing an instance of the SQLAlchemy class
-Base = declarative_base()
+Base = db.
 
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    email = Column(String(50), unique=True)
     firstname = Column(String(50))
-    lastname = Column(String(50))  
-    gender = Column(String(50))
-    pin = Column(Integer)
+    lastname = Column(String(50))
+    username = Column(String(50))
+    email = Column(String(50), unique=True)
     organization = String(100)
+    gender = Column(String(50))
     password = Column(String(64))
     
 class Meeting(Base):
     __tablename__ = 'meetings'
     id = Column(Integer, primary_key=True)
-    admin_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    admin_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     admin = relationship('User', back_populates='meetings')
     title = Column(String(100), nullable=False)
     description = Column(Text)
@@ -34,15 +35,15 @@ class Meeting(Base):
 class Attendance(Base):
     __tablename__ = 'attendance'
     id = Column(Integer, primary_key=True)
-    meeting_id = Column(Integer, ForeignKey('meeting.id'), nullable=False)
+    meeting_id = Column(Integer, ForeignKey('meetings.id'), nullable=False)
     meeting = relationship('Meeting', back_populates='attendances')
-    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='attendances')
     attendance_time = Column(DateTime, default=datetime.utcnow)
     status = Column(Enum('Present', 'Absent', 'Late', name='attendance_status'), default='Present')
 
 class QRCode(Base):
-    __tablename__ = 'qrcode'
+    __tablename__ = 'qr_code'
     id = Column(Integer, primary_key=True)
     qr_code_data = Column(Text, nullable=False)
     generated_time = Column(DateTime, default=datetime.utcnow)
