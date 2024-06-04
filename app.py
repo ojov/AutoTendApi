@@ -4,7 +4,8 @@ import random
 from repository import *
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
-import hashlib
+from services import *
+
 import secrets
 
 app = Flask(__name__)
@@ -14,18 +15,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 db = AttendanceManager()
-def hash_password(password):
-    salt = os.urandom(16)
-    password_hash = hashlib.pbkdf2_hmac(
-        'sha256', password.encode('utf-8'), salt, 100000)
-    return salt + password_hash
-
-def check_password(password, password_hash):
-    salt = password_hash[:16]
-    stored_password_hash = password_hash[16:]
-    new_password_hash = hashlib.pbkdf2_hmac(
-        'sha256', password.encode('utf-8'), salt, 100000)
-    return new_password_hash == stored_password_hash
 
 
 
@@ -69,6 +58,7 @@ def login():
             error = 'Invalid email or password'
             return render_template('login.html', error=error)
 
+        session['username'] = username
         password_hash = user.password
         if check_password(password, password_hash):
             session['user_id'] = user.id
@@ -137,8 +127,8 @@ def dashboard():
     if g.user is None:
         return redirect(url_for('login'))
     
-    current_user = User.query.get(g.user['id'])
-    return render_template('dashboard.html', user=current_user)
+    user = session.get('username')
+    return render_template('dashboard.html', user=user)
 
 if __name__ == '__main__':
     app.run()
