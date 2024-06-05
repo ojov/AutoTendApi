@@ -26,7 +26,6 @@ def signup():
     if request.method == 'POST':
         email = request.form['email']
         username = secure_filename(request.form['username'])
-    
         password = request.form['password']
         confirmpassword = request.form['confirmpassword']
         firstname = request.form['fname']
@@ -52,7 +51,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        breakpoint()
+        
         user = db.get_user_by_email(email)
         if not user:
             error = 'Invalid email or password'

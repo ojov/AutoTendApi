@@ -20,6 +20,7 @@ class AttendanceManager:
         user = User(
             firstname=firstname,
             lastname=lastname,
+            email=email,
             username=username,
             organization=organization,
             password=password
@@ -49,8 +50,9 @@ class AttendanceManager:
             'id': user.id, 'email': user.email, 'firstname': user.firstname, 'lastname': user.lastname, 'username': user.username, 'password': user.password, 'organization': user.organization, 'department': user.department
         }
 
-    def get_user_by_email(self, email):
-        return self.session.query(User).filter(User.email == email).first()
+    def get_user_by_email(self, email):  
+        user = self.session.query(User).filter_by(email=email).first()
+        return user
 
     def get_user_by_id(self, user_id):
         return self.session.query(User).filter(User.id == user_id).first()
