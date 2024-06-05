@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Records Interface</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/track.css') }}">
+
+</head>
+<body>
+<div class="sidebar">
+  <h2>Records</h2>
+  <ul>
+    <li>Class 1 ▼</li>
+    <li>Class 2 ▼</li>
+    <li>Class 3 ▼</li>
+  </ul>
+</div>
+<div class="content">
+  <div class="summary-circle">
+    <a href="{{ url_for('summary') }}">
+      Student's Summary
+    </a>
+  </div>
+</div>
+</body>
+</html>

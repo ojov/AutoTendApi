@@ -11,8 +11,7 @@ import secrets
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
 
-
-db = AttendanceManager(path='sqlite:///attendance.db', logging=True)
+db = AttendanceManager()
 
 @app.before_request
 def load_user():
@@ -22,26 +21,29 @@ def load_user():
     else:
         g.user = None
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        breakpoint()
         email = request.form['email']
+        username = secure_filename(request.form['username'])
+    
+        password = request.form['password']
+        confirmpassword = request.form['confirmpassword']
         firstname = request.form['fname']
         lastname = request.form['lname']
-        username = secure_filename(request.form['username'])
-        password = request.form['password']
-        gender = request.form['gender']
-        organisation =request.form['organization']
+        organization = request.form['organization']
+        
+        if password != confirmpassword:
+            error_message = 'Passwords do not match.'
+            return render_template('signup.html', error=error_message)
         session['username'] = username
         breakpoint()
         if db.check_user_exists(email, username):
             error_message = 'User with the same email already exists.'
             return render_template('signup.html', error=error_message)
         password_hash = hash_password(password)
-        user = User( firstname=firstname, lastname=lastname,username=username, email=email,organisation=organisation, gender=gender, password=password_hash)
-        db.add_user(user)
+        breakpoint()
+        db.add_user(email, username, firstname, lastname, password_hash, organization)
         
         return redirect(url_for('login'))
     return render_template('signup.html')
@@ -49,14 +51,14 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
-        user = db.get_user_by_email(username)
+        user = db.get_user_by_email(email)
         if not user:
             error = 'Invalid email or password'
             return render_template('login.html', error=error)
 
-        session['username'] = username
+        session['email'] = email
         password_hash = user.password
         if check_password(password, password_hash):
             session['user_id'] = user.id
@@ -125,8 +127,50 @@ def dashboard():
     if g.user is None:
         return redirect(url_for('login'))
     
-    user = session.get('username')
+    user = session.get('email')
     return render_template('dashboard.html', user=user)
+
+@app.route('/tracker')
+def tracker():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
+    return render_template('trackATD.html')
+
+@app.route('/create')
+def create():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
+    return render_template('createATD.html')
+
+@app.route('/records')
+def records():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
+    return render_template('records.html')
+
+@app.route('/markATD')
+def markATD():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
+    return render_template('markATD.html')
+
+@app.route('/schedule')
+def schedule():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
+    return render_template('schedule.html')
+
+@app.route('/summary')
+def summary():
+    if g.user is None:
+        return redirect(url_for('login'))
+    
+    return render_template('summary.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

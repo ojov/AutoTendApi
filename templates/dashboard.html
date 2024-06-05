@@ -1,11 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
 </head>
 <body>
-   <h1> Welcome Back {{user}}! </h1>
+  <div class="header">
+    <div class="profile">👤</div>
+    <div class="menu">☰</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab">
+      <a href="{{ url_for('index') }}">
+        Home </a>
+      </div>
+    <div class="tab active">
+      <a href="{{ url_for('dashboard') }}">
+      Dashboard </a>
+    </div>
+  </div>
+
+  <div class="dashboard-icons">
+    <div class="icon">
+      <a href="{{ url_for('tracker') }}">
+        <div class="icon-circle attendant-tracker">📝</div>
+        <div class="icon-label" href="/tracker">My Attendant Tracker</div>
+      </a>
+    </div>
+
+    <div class="icon">
+      <a href="{{ url_for('schedule') }}">
+        <div class="icon-circle upcoming-meetings">📅</div>
+        <div class="icon-label">Upcoming Meetings</div>
+      </a>
+    </div>
+
+    <div class="icon">
+      <a href="{{ url_for('markATD') }}">
+        <div class="icon-circle mark-attendant">✓</div>
+        <div class="icon-label">Mark Attendant</div>
+      </a>
+    </div>
+
+    <div class="icon">
+      <a href="{{ url_for('create') }}">
+        <div class="icon-circle create-meeting">✎</div>
+        <div class="icon-label">Create a Meeting</div>
+      </a>
+    </div>
+
+    <div class="icon">
+      <a href="{{ url_for('schedule') }}">
+        <div class="icon-circle updates">🔔</div>
+        <div class="icon-label">Updates</div>
+      </a>
+    </div>
+
+    <div class="icon">
+      <a href="{{ url_for('records') }}">
+        <div class="icon-circle records">📄</div>
+        <div class="icon-label">Records</div>
+      </a>
+    </div>
+
+  </div>
 </body>
 </html>

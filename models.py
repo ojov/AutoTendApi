@@ -1,24 +1,24 @@
-import sqlite3, random
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Text, DateTime, Enum
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
 
-
-# Initializing an instance of the SQLAlchemy class
-Base = db.
+Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, autoincrement=True)
     firstname = Column(String(50))
     lastname = Column(String(50))
-    username = Column(String(50))
-    email = Column(String(50), unique=True)
-    organization = String(100)
     gender = Column(String(50))
+    pin = Column(Integer)
+    organization = Column(String(100))  # Corrected
+    department = Column(String(100))  # Corrected
     password = Column(String(64))
-    
+    username = Column(String(50), unique=True)  # Added username field
+
+    meetings = relationship('Meeting', back_populates='admin')
+    attendances = relationship('Attendance', back_populates='user')
+
 class Meeting(Base):
     __tablename__ = 'meetings'
     id = Column(Integer, primary_key=True)
