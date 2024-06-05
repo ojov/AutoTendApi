@@ -15,3 +15,4 @@ def check_password(password, password_hash):
     new_password_hash = hashlib.pbkdf2_hmac(
         'sha256', password.encode('utf-8'), salt, 100000)
     return new_password_hash == stored_password_hash
+

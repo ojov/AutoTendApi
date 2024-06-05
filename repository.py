@@ -16,13 +16,12 @@ class AttendanceManager:
     def user_exists(self, email):
         return self.session.query(User).filter(User.email == email).count() > 0
 
-    def add_user(self, email, username, firstname, lastname, password, organization, department):
+    def add_user(self, email, username, firstname, lastname, password, organization):
         user = User(
             firstname=firstname,
             lastname=lastname,
             username=username,
             organization=organization,
-            department=department,
             password=password
         )
         self.session.add(user)

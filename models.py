@@ -9,6 +9,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     firstname = Column(String(50))
     lastname = Column(String(50))
+    email = Column(String(50), unique=True)
     gender = Column(String(50))
     pin = Column(Integer)
     organization = Column(String(100))  # Corrected

@@ -37,12 +37,11 @@ def signup():
             error_message = 'Passwords do not match.'
             return render_template('signup.html', error=error_message)
         session['username'] = username
-        breakpoint()
+        
         if db.check_user_exists(email, username):
-            error_message = 'User with the same email already exists.'
+            error_message = 'User with the same email or username already exists.'
             return render_template('signup.html', error=error_message)
         password_hash = hash_password(password)
-        breakpoint()
         db.add_user(email, username, firstname, lastname, password_hash, organization)
         
         return redirect(url_for('login'))
@@ -53,6 +52,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        breakpoint()
         user = db.get_user_by_email(email)
         if not user:
             error = 'Invalid email or password'
@@ -60,6 +60,7 @@ def login():
 
         session['email'] = email
         password_hash = user.password
+        breakpoint()
         if check_password(password, password_hash):
             session['user_id'] = user.id
             return redirect('/dashboard')
