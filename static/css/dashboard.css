@@ -19,14 +19,16 @@ body {
     display: flex;
     justify-content: space-around;
     background-color: #89C5CC;
-    color: white;
+    color: #19197f;
     height: 40px;
   }
   .tab {
     padding: 10px 20px;
+    color: #fff;
   }
   .tab.active {
     background-color: #19197f;
+    color: #fff;
   }
   .dashboard-icons {
     display: flex;
