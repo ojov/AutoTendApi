@@ -1,33 +1,81 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  .container {
-    text-align: center;
-  }
-  button {
-    background-color: #19197f;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-  .button:hover {
-    background-color: #89C5CC;
-  }
-  input[type="text"] {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+  font-family: Arial, sans-serif;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.header .profile,
+.header .menu {
+  font-size: 24px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  background-color: #89C5CC;
+  color: #19197f;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  color: #fff;
+}
+
+.tab.active a {
+  border-bottom: 3px solid #19197f;
+  color: #19197f;
+}
+
+.tab a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+}
+
+button {
+  background-color: #19197f;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #89C5CC;
+}
+
+input[type="text"] {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

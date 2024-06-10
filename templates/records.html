@@ -8,6 +8,21 @@
 
 </head>
 <body>
+  <div class="header">
+    <div class="profile">👤</div>
+    <div class="menu">☰</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab">
+      <a href="{{ url_for('dashboard') }}">
+        Dashboard </a>
+      </div>
+    <div class="tab active">
+      <a href="{{ url_for('records') }}">
+      Records </a>
+    </div>
+  </div>
 <table>
   <tr>
     <th>Student Email</th>

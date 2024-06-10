@@ -5,23 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Class Records Interface</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/track.css') }}">
-
 </head>
 <body>
-<div class="sidebar">
-  <h2>Records</h2>
-  <ul>
-    <li>Class 1 ▼</li>
-    <li>Class 2 ▼</li>
-    <li>Class 3 ▼</li>
-  </ul>
-</div>
-<div class="content">
-  <div class="summary-circle">
-    <a href="{{ url_for('summary') }}">
-      Student's Summary
-    </a>
-  </div>
-</div>
+    <div class="header">
+        <div class="profile">👤</div>
+        <div class="menu">☰</div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        </div>
+        <div class="tab active">
+            <a href="{{ url_for('tracker') }}">Track Attendance</a>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <h2>Records</h2>
+            <ul>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Class 1 ▼</a>
+                    <div class="dropdown-content">
+                        <a href="#">Math</a>
+                        <a href="#">Chemistry</a>
+                        <a href="#">Physics</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Class 2 ▼</a>
+                    <div class="dropdown-content">
+                        <a href="#">Biology</a>
+                        <a href="#">History</a>
+                        <a href="#">Geography</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Class 3 ▼</a>
+                    <div class="dropdown-content">
+                        <a href="#">English</a>
+                        <a href="#">Economics</a>
+                        <a href="#">Art</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="summary-circle">
+                <a href="{{ url_for('summary') }}">Student's Summary</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+            dropdown.addEventListener('click', function(event) {
+                event.stopPropagation();
+                this.querySelector('.dropdown-content').classList.toggle('show');
+            });
+        });
+
+        window.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-content').forEach(function(dropdownContent) {
+                dropdownContent.classList.remove('show');
+            });
+        });
+    </script>
 </body>
 </html>

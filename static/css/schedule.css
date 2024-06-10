@@ -4,12 +4,43 @@ body {
     margin: 0;
     padding: 20px;
   }
-  .announcement-header {
-    background-color: #19197f;
-    color: white;
-    padding: 10px;
-    text-align: center;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
   }
+  
+  .header .profile,
+  .header .menu {
+    font-size: 24px;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    background-color: #89C5CC;
+    color: #19197f;
+    height: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .tab {
+    padding: 10px 20px;
+    color: #fff;
+  }
+  
+  .tab.active a {
+    border-bottom: 3px solid #19197f;
+    color: #19197f;
+  }
+  
+  .tab a {
+    text-decoration: none;
+    color: inherit;
+  }
+
   .bar {
     width: 200px;
     background-color: #89C5CC;

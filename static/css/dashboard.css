@@ -11,10 +11,12 @@ body {
     padding: 20px;
     background-color: #fff;
   }
+  
   .header .profile,
   .header .menu {
     font-size: 24px;
   }
+  
   .tabs {
     display: flex;
     justify-content: space-around;
@@ -22,13 +24,20 @@ body {
     color: #19197f;
     height: 40px;
   }
+  
   .tab {
     padding: 10px 20px;
     color: #fff;
   }
-  .tab.active {
-    background-color: #19197f;
-    color: #fff;
+  
+  .tab.active a {
+    border-bottom: 3px solid #19197f;
+    color: #19197f;
+  }
+  
+  .tab a {
+    text-decoration: none;
+    color: inherit;
   }
   .dashboard-icons {
     display: flex;
