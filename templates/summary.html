@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Score Announcement</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/summary.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reponse.css') }}">
 
 </head>
 <body>
@@ -14,7 +15,7 @@
         <div class="menu">☰</div>
       </div>
     
-      <div class="tabs">
+      <div class="tabs" id="navbar">
         <div class="tab">
           <a href="{{ url_for('dashboard') }}">
             Dashboard </a>
@@ -23,6 +24,10 @@
           <a href="{{ url_for('summary') }}">
           Summary </a>
         </div>
+        <div class="tabi">
+            <a href="{{ url_for('signout') }}">
+              Sign Out </a>
+            </div>
       </div>
 
         <div class="content">
@@ -54,6 +59,10 @@
                 </tr>
             </table>
         </div>
-
+<script>
+    document.querySelector('.menu').addEventListener('click', function() {
+        document.getElementById('navbar').classList.toggle('show');
+    });
+    </script>
 </body>
 </html>

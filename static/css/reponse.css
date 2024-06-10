@@ -1,0 +1,47 @@
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .tabs {
+        display: none;
+        flex-direction: column;
+        background-color: #89C5CC;
+    }
+
+    .tabs.show {
+        display: flex;
+    }
+
+    .tab {
+        padding: 15px;
+        border-bottom: 1px solid #fff;
+    }
+
+    .header .menu {
+        display: block;
+    }
+    .tabi {
+        padding: 10px 20px;
+        color: red;
+    }
+}
+
+.tabi {
+padding: 10px 20px;
+color: #fff;
+}
+
+.tabi.active a {
+border-bottom: 3px solid #19197f;
+color: #19197f;
+}
+
+.tabi a {
+text-decoration: none;
+color: inherit;
+}
+  
+/* CSS for large screens */
+@media (min-width: 768px) {
+    .header .menu {
+      display: none;
+    }
+  }
