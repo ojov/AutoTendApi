@@ -5,24 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
-
 </head>
 <body>
-
-  <div class="dashboard-header">
-    Create Meeting
+  <div class="header">
+    <div class="profile">👤</div>
+    <div class="menu">☰</div>
   </div>
 
-  <button class="button">Start a meeting</button>
-  <button class="button">Schedule a meeting</button>
-
-  <div class="toggle-container">
-    <span>Access Device location</span>
-    <label class="toggle-switch">
-      <input type="checkbox">
-      <span class="slider"></span>
-    </label>
+  <div class="tabs">
+    <div class="tab">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    </div>
+    <div class="tab active">
+      <a href="{{ url_for('create') }}">Create Meeting</a>
+    </div>
   </div>
 
+  <div class="content">
+    <button class="button">Start a Meeting</button>
+    <button class="button">Schedule a Meeting</button>
+
+    <div class="toggle-container">
+      <span>Access Code Users Location</span>
+      <label class="toggle-switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
 </body>
 </html>
