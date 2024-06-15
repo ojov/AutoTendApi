@@ -12,10 +12,10 @@ class User(Base):
     email = Column(String(50), unique=True)
     gender = Column(String(50))
     pin = Column(Integer)
-    organization = Column(String(100))  # Corrected
-    department = Column(String(100))  # Corrected
+    organization = Column(String(100)) 
+    department = Column(String(100))  
     password = Column(String(64))
-    username = Column(String(50), unique=True)  # Added username field
+    username = Column(String(50), unique=True)
 
     meetings = relationship('Meeting', back_populates='admin')
     attendances = relationship('Attendance', back_populates='user')

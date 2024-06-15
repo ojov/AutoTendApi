@@ -59,7 +59,7 @@ def login():
 
         session['email'] = email
         password_hash = user.password
-        breakpoint()
+        # breakpoint()
         if check_password(password, password_hash):
             session['user_id'] = user.id
             return redirect('/dashboard')
@@ -68,6 +68,10 @@ def login():
             return render_template('login.html', error=error)
 
     return render_template('login.html')
+
+@app.route('/test')
+def test():
+    return '<img src="/static/images/logo.png" alt="Logo">'
 
 
 @app.route('/create_meeting', methods=['POST'])
@@ -79,10 +83,7 @@ def create_meeting():
     
     # Generate a QR code
     qr_code = secrets.token_urlsafe(16)
-
-    new_meeting = Meeting(title=title, qr_code=qr_code)
-    db.session.add(new_meeting)
-    db.session.commit()
+    db.add_meeting(title, qr_code, session['user_id'])
 
     return redirect(url_for('home'))
 

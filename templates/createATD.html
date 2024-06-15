@@ -13,7 +13,18 @@
     Create Meeting
   </div>
 
-  <button class="button">Start a meeting</button>
+  <button id="startMeeting" class="button">Start a meeting</button>
+
+ <form id="meetForm" action="{{ url_for('create_meeting') }}" method="post">
+        <label for="Name of Meeting">Meeting Title</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="expected">Expected number of Attendees</label>
+        <input type="text" id="expected" name="expected" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
   <button class="button">Schedule a meeting</button>
 
   <div class="toggle-container">
@@ -23,6 +34,16 @@
       <span class="slider"></span>
     </label>
   </div>
+  <script>
+        document.getElementById('startMeeting').addEventListener('click', function() {
+            var form = document.getElementById('meetForm');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        });
+    </script>
 
 </body>
 </html>

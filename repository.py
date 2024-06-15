@@ -28,6 +28,11 @@ class AttendanceManager:
         self.session.add(user)
         self.session.commit()
         return "Account created successfully"
+    
+    def add_meeting(self, title, qr_code, admin_id):
+        new_meeting = Meeting(title=title, qr_code=qr_code, admin_id=admin_id)
+        self.session.add(new_meeting)
+        self.session.commit()
 
     def add_attendance(self, meeting_id, user_id, status):
         attendance = Attendance(
