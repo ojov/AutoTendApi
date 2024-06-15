@@ -5,9 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Records</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/records.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reponse.css') }}">
 
 </head>
 <body>
+  <div class="header">
+    <div class="profile">👤</div>
+    <div class="menu">☰</div>
+  </div>
+
+  <div class="tabs" id="navbar" id="navbar">
+    <div class="tab">
+      <a href="{{ url_for('dashboard') }}">
+        Dashboard </a>
+      </div>
+    <div class="tab active">
+      <a href="{{ url_for('records') }}">
+      Records </a>
+    </div>
+    <div class="tabi">
+      <a href="{{ url_for('signout') }}">
+        Sign Out </a>
+      </div>
+  </div>
 <table>
   <tr>
     <th>Student Email</th>
@@ -30,5 +50,10 @@
     <td>12:30 pm</td>
   </tr>
 </table>
+<script>
+  document.querySelector('.menu').addEventListener('click', function() {
+    document.getElementById('navbar').classList.toggle('show');
+});
+</script>
 </body>
 </html>

@@ -5,12 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Announcement Section</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/schedule.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reponse.css') }}">
 
 </head>
 <body>
+  <div class="header">
+    <div class="profile">👤</div>
+    <div class="menu">☰</div>
+  </div>
 
-  <div class="announcement-header">
-    Announcement/ Updates
+  <div class="tabs" id="navbar">
+    <div class="tab">
+      <a href="{{ url_for('dashboard') }}">
+        Dashboard </a>
+      </div>
+    <div class="tab active">
+      <a href="{{ url_for('schedule') }}">
+      Schedule </a>
+    </div>
+    <div class="tabi">
+      <a href="{{ url_for('signout') }}">
+        Sign Out </a>
+      </div>
   </div>
 
   <div class="announcement-content">
@@ -39,6 +55,10 @@
     </div>
     
   </div>
-
+  <script>
+    document.querySelector('.menu').addEventListener('click', function() {
+      document.getElementById('navbar').classList.toggle('show');
+  });
+  </script>
 </body>
 </html>

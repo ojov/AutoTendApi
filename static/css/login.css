@@ -63,3 +63,8 @@ a {
     color: inherit;
     text-decoration: none;
   }
+
+.rad {
+  color: #000;
+  font-size: x-small;
+}

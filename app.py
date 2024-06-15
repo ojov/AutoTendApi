@@ -59,7 +59,6 @@ def login():
 
         session['email'] = email
         password_hash = user.password
-        # breakpoint()
         if check_password(password, password_hash):
             session['user_id'] = user.id
             return redirect('/dashboard')
