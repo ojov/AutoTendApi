@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Class Records Interface</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/track.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reponse.css') }}">
+<link rel="stylesheet" href="/static/css/track.css">
+<link rel="stylesheet" href="/static/css/reponse.css">
 </head>
 <body>
     <div class="header">
@@ -21,39 +21,22 @@
             <a href="{{ url_for('tracker') }}">Track Attendance</a>
         </div>
         <div class="tabi">
-          <a href="{{ url_for('signout') }}">
-            Sign Out </a>
-          </div>
+          <a href="{{ url_for('signout') }}">Sign Out</a>
+        </div>
     </div>
 
     <div class="content-wrapper">
         <div class="sidebar">
             <h2>Records</h2>
             <ul>
+                {% for meeting in meetings %}
                 <li class="dropdown">
-                    <a href="#" class="dropbtn">Class 1 ▼</a>
+                    <a href="#" class="dropbtn">Meeting {{ meeting.description }} ▼</a>
                     <div class="dropdown-content">
-                        <a href="#">Math</a>
-                        <a href="#">Chemistry</a>
-                        <a href="#">Physics</a>
+                        <a href="{{ url_for('records', meeting_id=meeting.id) }}">{{ meeting.title }}</a>
                     </div>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Class 2 ▼</a>
-                    <div class="dropdown-content">
-                        <a href="#">Biology</a>
-                        <a href="#">History</a>
-                        <a href="#">Geography</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropbtn">Class 3 ▼</a>
-                    <div class="dropdown-content">
-                        <a href="#">English</a>
-                        <a href="#">Economics</a>
-                        <a href="#">Art</a>
-                    </div>
-                </li>
+                {% endfor %}
             </ul>
         </div>
         <div class="content">
@@ -76,9 +59,10 @@
                 dropdownContent.classList.remove('show');
             });
         });
-      document.querySelector('.menu').addEventListener('click', function() {
-        document.getElementById('navbar').classList.toggle('show');
-    });
+
+        document.querySelector('.menu').addEventListener('click', function() {
+            document.getElementById('navbar').classList.toggle('show');
+        });
     </script>
 </body>
 </html>

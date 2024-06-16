@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Records</title>
+</head>
+<body>
+    <h2>Attendance Records</h2>
+    <table border="1">
+        <tr>
+            <th>Attendee Name</th>
+            <th>Time</th>
+            <th>Status</th>
+        </tr>
+        {% for record in attendance_records %}
+        <tr>
+            <td>{{ record['Attendee Name'] }}</td>
+            <td>{{ record['Time'] }}</td>
+            <td>{{ record['Status'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
