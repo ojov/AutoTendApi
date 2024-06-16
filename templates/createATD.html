@@ -23,11 +23,9 @@
 
     <!-- The form to be shown on button click -->
     <form id="createMeet" action="{{ url_for('create_meeting') }}" method="post">
-        <label for="title">Meeting title</label>
+        
+        <label for="title">what's this meeting about</label>
         <input type="text" id="title" name="title" required>
-        <br>
-        <label for="description">what's this meeting about</label>
-        <input type="text" id="description" name="description" required>
         <br>
         <button type="submit">Submit</button>
     </form>

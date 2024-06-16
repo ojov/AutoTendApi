@@ -53,11 +53,19 @@
         },
         body: JSON.stringify({ lectureCode: lectureCode })
       })
-      
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    });
+      .then(response => response.text())
+            .then(data => {
+                if (data) {
+                    alert(data);
+                } else {
+                    alert('Failed to mark attendance. Please try again.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Failed to mark attendance. Please try again.');
+            });
+        });
 
   </script>
 </body>

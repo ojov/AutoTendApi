@@ -34,9 +34,10 @@ class AttendanceManager:
         self.session.add(new_meeting)
         self.session.commit()
 
-    def add_attendance(self, meeting_id, user_id, status):
+    def add_attendance(self, user_id, meeting_id, attendee_name, status='Present'):
         attendance = Attendance(
             meeting_id=meeting_id,
+            attendee_name=attendee_name,
             user_id=user_id,
             status=status
         )
@@ -54,13 +55,14 @@ class AttendanceManager:
         return {
             'id': user.id, 'email': user.email, 'firstname': user.firstname, 'lastname': user.lastname, 'username': user.username, 'password': user.password, 'organization': user.organization, 'department': user.department
         }
+    
 
     def get_user_by_email(self, email):  
         user = self.session.query(User).filter_by(email=email).first()
         return user
-    def get_meeting_by_meet_id(self, email):  
-        user = self.session.query(Meeting).filter_by(email=email).first()
-        return user
+    def get_meeting_by_meet_code(self, meeting_id):  
+        meeting = self.session.query(Meeting).filter_by(description=meeting_id).first()
+        return meeting
 
     def get_user_by_id(self, user_id):
         return self.session.query(User).filter(User.id == user_id).first()

@@ -21,7 +21,6 @@ class User(Base):
     department = Column(String(100))  
     password = Column(String(64))
     username = Column(String(50), unique=True)
-
     meetings = relationship('Meeting', back_populates='admin')
     attendances = relationship('Attendance', back_populates='user')
 
@@ -42,8 +41,9 @@ class Attendance(Base):
     __tablename__ = 'attendance'
     id = Column(Integer, primary_key=True)
     meeting_id = Column(Integer, ForeignKey('meetings.id'), nullable=False)
+    attendee_name = Column(String(50))
     meeting = relationship('Meeting', back_populates='attendances')
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=True)
     user = relationship('User', back_populates='attendances')
     attendance_time = Column(DateTime, default=datetime.utcnow)
     status = Column(Enum('Present', 'Absent', 'Late', name='attendance_status'), default='Present')
