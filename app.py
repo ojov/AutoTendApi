@@ -107,16 +107,19 @@ def create_meeting():
 @app.route('/mark_attendance', methods=['GET', 'POST'])
 def mark_attendance():
     if request.method == 'POST':
-        data = request.get_json()
-        meeting_code = data.get('lectureCode')
-        # qr_code = request.form.get('qr_code')
-        attendee_name = session["name"]
-        if not attendee_name:
+        if request.is_json:
+            attendee_name = session["name"]
+            data = request.get_json()
+            meeting_code = data.get('lectureCode')
+        else:
             firstname = request.form['first_name']
             lastname = request.form['last_name']
             attendee_name= firstname + " " + lastname
             meeting_code = request.form['meeting_code']
             attendee_id = 0
+        # qr_code = request.form.get('qr_code')
+        
+
 
         if not meeting_code or not attendee_name:
             return 'Meeting Code and attendee name are required'
