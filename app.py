@@ -16,6 +16,10 @@ app.config['SECRET_KEY'] = os.urandom(16)
 
 db = AttendanceManager()
 
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory(app.static_folder, filename)
+
 @app.before_request
 def load_user():
     user_id = session.get('user_id')
