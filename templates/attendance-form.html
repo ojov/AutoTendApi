@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Mark Attendance</h2>
+        <form method="POST" action="{{ url_for('mark_attendance') }}">
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input type="text" class="form-control" id="first-name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input type="text" class="form-control" id="last-name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="meeting-code">Meeting Code</label>
+                <input type="text" class="form-control" id="meeting-code" name="meeting_code" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Mark Attendance</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

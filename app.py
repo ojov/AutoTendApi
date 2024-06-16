@@ -75,51 +75,62 @@ def login():
 
 @app.route('/create_meeting', methods=['POST'])
 def create_meeting():
-    meeting_id = secrets.token_urlsafe(4)
-    title = request.form.get('title')
-    
-    if not meeting_id or not title:
-        return render_template('start_meeting.html', error="Meeting ID and Title are required")
-    
-    # Generate the QR code
-    qr_data = f"{title}-{meeting_id}"
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=1,
-    )
-    qr.add_data(qr_data)
-    qr.make(fit=True)
-    img = qr.make_image(fill='black', back_color='white')
+        meeting_id = secrets.token_urlsafe(4)
+        title = request.form.get('title')
+        url = "https://autotend-aqre.onrender.com/mark_attendance"
+        
+        if not meeting_id or not title:
+            return render_template('start_meeting.html', error="Meeting ID and Title are required")
+        
+        # Generate the QR code
+        qr_data = f"{title}-{meeting_id}"
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=1,
+        )
+        qr.add_data(url)
+        qr.make(fit=True)
+        img = qr.make_image(fill='black', back_color='white')
 
-    # Save QR code image
-    qr_code_filename = f"qr_code_{meeting_id}.png"
-    img_path = os.path.join('static', 'qr_codes', qr_code_filename)
-    img.save(img_path)
-    db.add_meeting(title, meeting_id, session["user_id"])
+        # Save QR code image
+        qr_code_filename = f"qr_code_{meeting_id}.png"
+        img_path = os.path.join('static', 'qr_codes', qr_code_filename)
+        img.save(img_path)
+        db.add_meeting(title, meeting_id, session["user_id"])
 
-    # Render the display QR code template
-    return render_template('show_qr.html', meeting_id=meeting_id, title=title, qr_code_url=url_for('static', filename=f'qr_codes/{qr_code_filename}'))
+        # Render the display QR code template
+        return render_template('show_qr.html', meeting_id=meeting_id, title=title, qr_code_url=url_for('static', filename=f'qr_codes/{qr_code_filename}'))
+    
 
 @app.route('/mark_attendance', methods=['GET', 'POST'])
 def mark_attendance():
-    data = request.get_json()
-    meeting_code = data.get('lectureCode')
-    # qr_code = request.form.get('qr_code')
-    attendee_name = session["name"]
+    if request.method == 'POST':
+        data = request.get_json()
+        meeting_code = data.get('lectureCode')
+        # qr_code = request.form.get('qr_code')
+        attendee_name = session["name"]
+        if not attendee_name:
+            firstname = request.form['first_name']
+            lastname = request.form['last_name']
+            attendee_name= firstname + " " + lastname
+            meeting_code = request.form['meeting_code']
+            attendee_id = 0
 
-    if not meeting_code or not attendee_name:
-        return 'Meeting Code and attendee name are required'
-    
-    meeting = db.get_meeting_by_meet_code(meeting_code)
+        if not meeting_code or not attendee_name:
+            return 'Meeting Code and attendee name are required'
+        
+        meeting = db.get_meeting_by_meet_code(meeting_code)
 
-    if not meeting:
-        return 'Meeting not found'
+        if not meeting:
+            return 'Meeting not found'
+        attendee_id=session["user_id"]
 
-    db.add_attendance(session["user_id"] , meeting.id, attendee_name, status='Present')
-    
-    return f'You have been marked present for {meeting.title}'
+        db.add_attendance(attendee_id, meeting.id, attendee_name, status='Present')
+        
+        return f'You have been marked present for {meeting.title}'
+    return render_template('attendance-form.html')
 
 
 @app.route('/signout')
