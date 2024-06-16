@@ -64,6 +64,7 @@ def login():
         password_hash = user.password
         if check_password(password, password_hash):
             session['user_id'] = user.id
+            session['name']= user.firstname + " " + user.lastname
             return redirect('/dashboard')
         else:
             error = 'Invalid email or password'
@@ -87,7 +88,7 @@ def create_meeting():
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
-        border=4,
+        border=1,
     )
     qr.add_data(qr_data)
     qr.make(fit=True)
@@ -100,17 +101,17 @@ def create_meeting():
     db.add_meeting(title, description, session["user_id"])
 
     # Render the display QR code template
-    return render_template('show_qr.html', title=title, qr_code_url=url_for('static', filename=f'qr_codes/{qr_code_filename}'))
+    return render_template('show_qr.html', meeting_id=meeting_id, title=title, qr_code_url=url_for('static', filename=f'qr_codes/{qr_code_filename}'))
 
-
-
-@app.route('/mark_attendance', methods=['POST'])
+@app.route('/mark_attendance', methods=['GET', 'POST'])
 def mark_attendance():
+    data = request.get_json()
+    lecture_code = data.get('lectureCode')
     qr_code = request.form.get('qr_code')
-    attendee_name = request.form.get('attendee_name')
+    attendee_name = session["name"]
 
-    if not qr_code or not attendee_name:
-        return 'QR code and attendee name are required'
+    if not lecture_code or not attendee_name:
+        return 'Meeting Code and attendee name are required'
     
     meeting = Meeting.query.filter_by(qr_code=qr_code).first()
 
