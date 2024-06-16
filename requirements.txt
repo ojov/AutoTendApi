@@ -65,3 +65,4 @@ SQLAlchemy
 sqlparse
 urllib3
 uuid
+qrcode
