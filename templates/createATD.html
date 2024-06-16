@@ -18,8 +18,20 @@
       <a href="{{ url_for('dashboard') }}">Dashboard</a>
     </div>
     <div class="tab active">
-      <a href="{{ url_for('create') }}">Create Meeting</a>
+      <button id="showFormButton" type="button">create meeting</button>
     </div>
+
+    <!-- The form to be shown on button click -->
+    <form id="createMeet" action="{{ url_for('create_meeting') }}" method="post">
+        <label for="title">Meeting title</label>
+        <input type="text" id="title" name="title" required>
+        <br>
+        <label for="description">what's this meeting about</label>
+        <input type="text" id="description" name="description" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
     <div class="tabi">
       <a href="{{ url_for('signout') }}">
         Sign Out </a>
@@ -42,6 +54,14 @@
     document.querySelector('.menu').addEventListener('click', function() {
       document.getElementById('navbar').classList.toggle('show');
   });
+  document.getElementById('showFormButton').addEventListener('click', function() {
+            var form = document.getElementById('createMeet');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        });
   </script>
 </body>
 </html>

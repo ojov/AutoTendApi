@@ -4,9 +4,12 @@ import random
 from repository import *
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
+import qrcode
 from services import *
 
 import secrets
+if not os.path.exists('static/qr_codes'):
+    os.makedirs('static/qr_codes')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
@@ -68,23 +71,37 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/test')
-def test():
-    return '<img src="/static/images/logo.png" alt="Logo">'
-
 
 @app.route('/create_meeting', methods=['POST'])
 def create_meeting():
+    meeting_id = secrets.token_urlsafe(4)
     title = request.form.get('title')
+    description=request.form.get('description')
     
-    if not title:
-        return 'Title is required'
+    if not meeting_id or not title:
+        return render_template('start_meeting.html', error="Meeting ID and Title are required")
     
-    # Generate a QR code
-    qr_code = secrets.token_urlsafe(16)
-    db.add_meeting(title, qr_code, session['user_id'])
+    # Generate the QR code
+    qr_data = f"{title}-{meeting_id}"
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(qr_data)
+    qr.make(fit=True)
+    img = qr.make_image(fill='black', back_color='white')
 
-    return redirect(url_for('home'))
+    # Save QR code image
+    qr_code_filename = f"qr_code_{meeting_id}.png"
+    img_path = os.path.join('static', 'qr_codes', qr_code_filename)
+    img.save(img_path)
+    db.add_meeting(title, description, session["user_id"])
+
+    # Render the display QR code template
+    return render_template('show_qr.html', title=title, qr_code_url=url_for('static', filename=f'qr_codes/{qr_code_filename}'))
+
 
 
 @app.route('/mark_attendance', methods=['POST'])
@@ -110,12 +127,6 @@ def mark_attendance():
 def signout():
     session.pop('user_id', None)
     return redirect(url_for('index'))
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
 
    
 @app.route('/')

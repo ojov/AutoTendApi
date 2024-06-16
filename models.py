@@ -1,6 +1,11 @@
 from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Text, DateTime, Enum
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
+from datetime import datetime, timedelta
+
+def default_end_time():
+    return datetime.utcnow() + timedelta(hours=1)
+
 
 Base = declarative_base()
 
@@ -27,8 +32,8 @@ class Meeting(Base):
     admin = relationship('User', back_populates='meetings')
     title = Column(String(100), nullable=False)
     description = Column(Text)
-    start_time = Column(DateTime, nullable=False)
-    end_time = Column(DateTime, nullable=False)
+    start_time = Column(DateTime,default=datetime.utcnow)
+    end_time = Column(DateTime, default=default_end_time, nullable=False)
     qr_code_id = Column(Integer, ForeignKey('qr_code.id'))
     qr_code = relationship('QRCode', back_populates='meeting')
     attendances = relationship('Attendance', back_populates='meeting')
