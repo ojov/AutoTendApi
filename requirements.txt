@@ -67,4 +67,5 @@ urllib3
 uuid
 qrcode
 pandas
-pandas xlsxwriter pdfkit
+xlsxwriter
+pdfkit
