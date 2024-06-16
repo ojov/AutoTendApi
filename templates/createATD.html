@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reponse.css') }}">
+<link rel="stylesheet" href="/static/css/create.css">
+<link rel="stylesheet" href="/static/css/reponse.css">
 </head>
 <body>
   <div class="header">
@@ -21,15 +21,6 @@
       <a  type="button">create meeting</a>
     </div>
 
-    <!-- The form to be shown on button click -->
-    <form id="createMeet" action="{{ url_for('create_meeting') }}" method="post">
-        
-        <label for="title">what's this meeting about</label>
-        <input type="text" id="title" name="title" required>
-        <br>
-        <button type="submit">Submit</button>
-    </form>
-
     <div class="tabi">
       <a href="{{ url_for('signout') }}">
         Sign Out </a>
@@ -40,6 +31,16 @@
     <button class="button">Start a Meeting</button>
     <button id="showFormButton" class="button">Schedule a Meeting</button>
 
+    
+    <!-- The form to be shown on button click -->
+    <form id="createMeet" action="{{ url_for('create_meeting') }}" method="post">
+        
+      <label for="title">what's this meeting about</label>
+      <input type="text" id="title" name="title" required>
+      <br>
+      <button class="button" type="submit">Create</button>
+    </form>
+  
     <div class="toggle-container">
       <span>Access Device Location</span>
       <label class="toggle-switch">

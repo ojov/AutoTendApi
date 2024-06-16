@@ -6,6 +6,10 @@ from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 import qrcode
 from services import *
+import pandas as pd
+from flask import send_file
+from io import BytesIO
+import pdfkit
 
 import secrets
 if not os.path.exists('static/qr_codes'):
@@ -15,10 +19,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
 
 db = AttendanceManager()
-
-@app.route('/static/<path:filename>')
-def static_files(filename):
-    return send_from_directory(app.static_folder, filename)
 
 @app.before_request
 def load_user():
@@ -163,7 +163,8 @@ def tracker():
     if g.user is None:
         return redirect(url_for('login'))
     
-    return render_template('trackATD.html')
+    meetings = db.get_all_meetings_by_user(session['user_id'])
+    return render_template('trackATD.html', meetings=meetings)
 
 @app.route('/create')
 def create():
@@ -172,12 +173,23 @@ def create():
     
     return render_template('createATD.html')
 
-@app.route('/records')
-def records():
+@app.route('/records', defaults={'meeting_id': None})
+@app.route('/records/<int:meeting_id>')
+def records(meeting_id):
     if g.user is None:
         return redirect(url_for('login'))
-    
-    return render_template('records.html')
+
+    meetings = db.get_all_meetings_by_user(session['user_id'])
+
+    if meeting_id:
+        attendance_records = db.get_attendance_by_meeting_id(meeting_id)
+        meeting = db.get_meeting_by_id(meeting_id)
+        title = meeting.title if meeting else "Unknown Meeting"
+    else:
+        attendance_records = db.get_all_attendance()
+        title = "All Attendance Records"
+
+    return render_template('records.html', attendance_records=attendance_records, title=title, meeting_id=meeting_id)
 
 @app.route('/markATD')
 def markATD():
@@ -199,6 +211,56 @@ def summary():
         return redirect(url_for('login'))
     
     return render_template('summary.html')
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory(app.static_folder, filename)
+
+@app.template_filter('format_datetime')
+def format_datetime(value):
+    if value is None:
+        return ""
+    return value.strftime("%Y-%m-%d %H:%M:%S")
+
+import pdfkit
+
+@app.route('/download_records/<format>', defaults={'meeting_id': None})
+@app.route('/download_records/<format>/<int:meeting_id>')
+def download_records(format, meeting_id):
+    if g.user is None:
+        return redirect(url_for('login'))
+
+    if meeting_id:
+        attendance_records = db.get_attendance_by_meeting_id(meeting_id)
+    else:
+        attendance_records = db.get_all_attendance()
+
+    data = [{
+        'Attendee Name': record.attendee_name,
+        'Time': record.attendance_time.strftime("%Y-%m-%d %H:%M:%S"),
+        'Status': record.status
+    } for record in attendance_records]
+
+    if format == 'excel':
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        writer = pd.ExcelWriter(output, engine='xlsxwriter')
+        df.to_excel(writer, index=False, sheet_name='Sheet1')
+        writer.close()
+        output.seek(0)
+        return send_file(output, download_name='attendance_records.xlsx', as_attachment=True)
+
+    elif format == 'pdf':
+        path_to_wkhtmltopdf = r'C:\path\to\wkhtmltopdf\bin\wkhtmltopdf.exe'  # Update this path
+        config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
+        html = render_template('records_pdf.html', attendance_records=data)
+        pdf = pdfkit.from_string(html, False, configuration=config)
+        response = make_response(pdf)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = 'attachment; filename=attendance_records.pdf'
+        return response
+
+    return "Invalid format", 400
 
 if __name__ == '__main__':
     app.run(debug=True)

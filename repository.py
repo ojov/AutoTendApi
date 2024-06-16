@@ -1,10 +1,6 @@
-# repository.py
-
 from sqlalchemy import create_engine, select, delete
 from sqlalchemy.orm import sessionmaker
 from models import *
-
-
 
 class AttendanceManager:
     def __init__(self, path="sqlite:///attendance.db", logging=False):
@@ -30,7 +26,7 @@ class AttendanceManager:
         return "Account created successfully"
     
     def add_meeting(self, title, description, admin_id):
-        new_meeting = Meeting(title=title,description=description, admin_id=admin_id)
+        new_meeting = Meeting(title=title, description=description, admin_id=admin_id)
         self.session.add(new_meeting)
         self.session.commit()
 
@@ -56,10 +52,10 @@ class AttendanceManager:
             'id': user.id, 'email': user.email, 'firstname': user.firstname, 'lastname': user.lastname, 'username': user.username, 'password': user.password, 'organization': user.organization, 'department': user.department
         }
     
-
     def get_user_by_email(self, email):  
         user = self.session.query(User).filter_by(email=email).first()
         return user
+
     def get_meeting_by_meet_code(self, meeting_id):  
         meeting = self.session.query(Meeting).filter_by(description=meeting_id).first()
         return meeting
@@ -69,6 +65,9 @@ class AttendanceManager:
 
     def get_attendance_by_meeting_id(self, meeting_id):
         return self.session.query(Attendance).filter(Attendance.meeting_id == meeting_id).all()
+
+    def get_all_attendance(self):  # Add this method
+        return self.session.query(Attendance).all()
 
     def update_user(self, user_id, new_firstname, new_lastname, new_username, new_organization, new_department, new_password):
         user = self.session.query(User).filter(User.id == user_id).first()
@@ -110,3 +109,10 @@ class AttendanceManager:
 
     def search_attendance_by_status(self, status):
         return self.session.query(Attendance).filter(Attendance.status == status).all()
+    
+    def get_all_meetings_by_user(self, user_id):
+        return self.session.query(Meeting).filter(Meeting.admin_id == user_id).all()
+
+    def get_meeting_by_id(self, meeting_id):
+        return self.session.query(Meeting).filter(Meeting.id == meeting_id).first()
+
