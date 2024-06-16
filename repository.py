@@ -58,6 +58,9 @@ class AttendanceManager:
     def get_user_by_email(self, email):  
         user = self.session.query(User).filter_by(email=email).first()
         return user
+    def get_meeting_by_meet_id(self, email):  
+        user = self.session.query(Meeting).filter_by(email=email).first()
+        return user
 
     def get_user_by_id(self, user_id):
         return self.session.query(User).filter(User.id == user_id).first()

@@ -106,11 +106,11 @@ def create_meeting():
 @app.route('/mark_attendance', methods=['GET', 'POST'])
 def mark_attendance():
     data = request.get_json()
-    lecture_code = data.get('lectureCode')
+    meeting_id = data.get('lectureCode')
     qr_code = request.form.get('qr_code')
     attendee_name = session["name"]
 
-    if not lecture_code or not attendee_name:
+    if not meeting_id or not attendee_name:
         return 'Meeting Code and attendee name are required'
     
     meeting = Meeting.query.filter_by(qr_code=qr_code).first()
