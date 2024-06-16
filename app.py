@@ -139,7 +139,6 @@ def mark_attendance():
         return f'You have been marked present for {meeting.title}'
     return render_template('attendance-form.html')
 
-
 @app.route('/signout')
 def signout():
     session.pop('user_id', None)
@@ -197,6 +196,38 @@ def markATD():
         return redirect(url_for('login'))
     
     return render_template('markATD.html')
+
+@app.route('/nonmarkATD', methods=['GET', 'POST'])
+def nonmarkATD():
+    if request.method == 'POST':
+        if request.is_json:
+            firstname = request.form.get('firstname', '')
+            lastname = request.form.get('lastname', '')
+            attendee_name = f"{firstname} {lastname}"
+            meeting_code = request.form.get('lecture-code', '')
+            attendee_id = 0
+        else:
+            firstname = request.form.get('firstname', '')
+            lastname = request.form.get('lastname', '')
+            attendee_name = f"{firstname} {lastname}"
+            meeting_code = request.form.get('lecture_code', '')
+            attendee_id = 0
+
+        if not meeting_code or not attendee_name:
+            return 'Meeting Code and attendee name are required'
+
+        meeting = db.get_meeting_by_meet_code(meeting_code)
+        if not meeting:
+            return 'Meeting not found'
+        
+        if attendee_name:
+            dash = f"Good Work! {firstname}, you attendance as been recorded!"
+        else:
+            dash = "wrong Details"
+        db.add_attendance(attendee_id, meeting.id, attendee_name, status='Present')
+        return render_template('nonmarkATD.html', dash=dash)
+
+    return render_template('nonmarkATD.html')
 
 @app.route('/schedule')
 def schedule():
