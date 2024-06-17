@@ -222,7 +222,6 @@ def format_datetime(value):
         return ""
     return value.strftime("%Y-%m-%d %H:%M:%S")
 
-import pdfkit
 
 @app.route('/download_records/<format>', defaults={'meeting_id': None})
 @app.route('/download_records/<format>/<int:meeting_id>')
@@ -251,7 +250,7 @@ def download_records(format, meeting_id):
         return send_file(output, download_name='attendance_records.xlsx', as_attachment=True)
 
     elif format == 'pdf':
-        path_to_wkhtmltopdf = r'C:\path\to\wkhtmltopdf\bin\wkhtmltopdf.exe'  # Update this path
+        path_to_wkhtmltopdf = r'C:\path\to\wkhtmltopdf\bin\wkhtmltopdf.exe'
         config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
         html = render_template('records_pdf.html', attendance_records=data)
         pdf = pdfkit.from_string(html, False, configuration=config)
