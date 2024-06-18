@@ -10,8 +10,8 @@ import pandas as pd
 from flask import send_file
 from io import BytesIO
 import pdfkit
-
 import secrets
+
 if not os.path.exists('static/qr_codes'):
     os.makedirs('static/qr_codes')
 
